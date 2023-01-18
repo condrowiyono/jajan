@@ -1,27 +1,41 @@
-# dairy-vue
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <h3 align="center">Aplikasi Diary Jajan</h3>
+  <p align="center">
+    Website Aplikasi Jajan
+    <br />
+    <a href="https://github.com/condrowiyono/jajan"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://news-condrowiyono.vercel.app/">View Demo on Vercel</a>
+    ·
+    <a href="https://github.com/condrowiyono/jajan/issues">Report Bug</a>
+  </p>
+</div>
 
-This template should help get you started developing with Vue 3 in Vite.
+### Video
+![record](https://user-images.githubusercontent.com/14830052/213284621-e1b78644-d96a-4a4b-a969-6d5cf659df5e.gif)
 
-## Recommended IDE Setup
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+### Project Boilerplate
 
-## Type Support for `.vue` Imports in TS
+Project ini di-bootstrap menggunakan [create-vue](https://github.com/vuejs/create-vue). Menggunakan framework vuejs dan bundler vite, serta typescript. Secara lengka menggunakan konfigurasi sebagai berikut:
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+<img width="540" alt="image" src="https://user-images.githubusercontent.com/14830052/213282263-843ce7e8-29b2-4c79-b02b-e00890cc0677.png">
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+Ditambah dengan Vuex sebagai state management
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+### Struktur Folder
+- `assets` (berisi `main.css` -> global css)
+- `components` (berisi `ExpenseForm` dan `ExpenseCard`)
+- `router` (berisi konfigurasi `vue-router`)
+- `store` (berisi state management file)
+- `types` (berisi type definition)
+- `utils` (berisi `currency` dan `date` yang menggunakan [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) sebagai formatting template, dan `fetcher` untuk call API menggunakan `fetch`)
+- `view` (berisi `HomeView` dengan utils [groupItem](https://github.com/condrowiyono/jajan/edit/main/README.md#groupitem) yang mengubah response API menjadi group berdasarkan bulan dan tanggal)
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
+### Instalasi di Lingkungan Pengembangan
 
 ```sh
 npm install
@@ -50,3 +64,69 @@ npm run test:unit
 ```sh
 npm run lint
 ```
+
+## Utils File
+## groupItem
+```ts
+import type { Expense } from "@/types/Expense";
+import { getMonthName } from "@/utils/date";
+
+export function groupExpense(items: Expense[]) {
+  const data = items.reduce((acc, item) => {
+    const year = new Date(item.tanggal).getFullYear();
+    const month = getMonthName(new Date(item.tanggal).getMonth() + 1);
+    const my = `${month} ${year}`;
+    const date = item.tanggal;
+
+    if (!acc[my]) acc[my] = {};
+    if (!acc[my][date]) acc[my][date] = [];
+
+    acc[my][date].push(item);
+
+    return acc;
+  }, {} as Record<string, Record<string, Expense[]>>);
+
+  const total = Object.keys(data).reduce((acc, month) => {
+    acc[month] = Object.keys(data[month]).reduce((acc, date) => {
+      acc += data[month][date].reduce((acc, item) => {
+        acc += item.pengeluaran;
+        return acc;
+      }, 0);
+
+      return acc;
+    }, 0);
+
+    return acc;
+  }, {} as Record<string, number>);
+
+  return { data, total };
+}
+
+```
+
+### date, currency
+```ts
+const formatDate = (value: Date) =>
+  new Intl.DateTimeFormat("id-ID", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(value);
+
+const formatTime = (value: Date) =>
+  new Intl.DateTimeFormat("id-ID", {
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(value);
+
+const formatCurrency = (value: number) => {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    maximumFractionDigits: 0,
+  }).format(value);
+};
+```
+
+## Unit Test
+<img width="571" alt="Screen Shot 2023-01-19 at 03 06 57" src="https://user-images.githubusercontent.com/14830052/213283591-9fdc1343-17b9-47ea-a590-f223c4b2b5f0.png">
