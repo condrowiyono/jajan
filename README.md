@@ -8,7 +8,7 @@
     <a href="https://github.com/condrowiyono/jajan"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://news-condrowiyono.vercel.app/">View Demo on Vercel</a>
+    <a href="https://jajan-kappa.vercel.app/">View Demo on Vercel</a>
     ·
     <a href="https://github.com/condrowiyono/jajan/issues">Report Bug</a>
   </p>
