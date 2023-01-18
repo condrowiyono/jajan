@@ -1,35 +1,82 @@
-@import './base.css';
-
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
-  font-weight: normal;
+body {
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  box-sizing: border-box;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
+* {
+  box-sizing: border-box;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+input {
+  font-size: inherit;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
+button {
+  padding: 8px 16px;
+  font-size: inherit;
+  border-radius: 4px;
+  cursor: pointer;
+}
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+button.primary {
+  background-color: #37309D;
+  color: #FFFFFF; 
+  border: none;
+  transition: background-color 0.2s;
+}
+
+button.primary:hover {
+  background-color: #27235d;
+  transition: background-color 0.2s;
+}
+
+button.secondary {
+  background-color: #6C727F;
+  border: none;
+  color: #FFFFFF; 
+  transition: background-color 0.2s;
+}
+
+
+button.secondary:hover {
+  background-color: #393c44;
+  transition: background-color 0.2s;
+}
+
+dialog[open] {
+  box-sizing: border-box;
+  border: none;
+  border-radius: 4px;
+  width: 400px;
+  padding: 16px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table tbody tr td {
+  vertical-align: top;
+  padding: 8px 4px;
+  word-wrap: break-word;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+table tbody tr td.right {
+  text-align: right;
+}
+
+table tfoot tr td {
+  padding: 8px 4px;
+  text-align: right;
+  font-weight: 700;
 }
