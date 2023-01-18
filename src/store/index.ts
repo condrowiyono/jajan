@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 import type { Expense } from "@/types/Expense";
 import fetcher from "@/utils/fetcher";
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 export type State = {
   items: Expense[];
@@ -21,7 +22,7 @@ export default createStore<State>({
     async fetchItems({ commit }) {
       commit("SET_ITEMS_LOADING");
       try {
-        const resp = await fetcher<Expense[]>("http://localhost:3000/items");
+        const resp = await fetcher<Expense[]>(`${VITE_API_URL}/items`);
 
         commit("SET_ITEMS", resp);
       } catch (error) {
